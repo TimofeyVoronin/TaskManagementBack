@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    container_name: db
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backups:/backups:ro
+    env_file: 
+      - ./db.env
+    ports:
+      - "5432:5432"
+    networks:
+      - djangonetwork
+
+  django:
+    env_file: 
+      - ./db.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "python /app/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - djangonetwork
+
+networks:
+  djangonetwork:
+
+volumes:
+  pgdata:
