@@ -57,7 +57,8 @@ THIRD_PARTY_APPS = [
 ]
 
 PROJECT_APPS = [
-
+    'taskmanagement.apps.TaskmanagementConfig',
+    'registration.apps.RegistrationConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + FILTERS_APPS + DRF_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -204,3 +205,17 @@ CORS_ALLOW_HEADERS = (
     "x-csrftoken",
     "x-requested-with",
 )
+
+# Откуда будут приходить письма
+DEFAULT_FROM_EMAIL = 'no-reply@example.com'
+
+# В режиме DEBUG — выводим письма в консоль
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.example.com')
+    EMAIL_PORT = os.environ.get('EMAIL_PORT', 587)
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = True
