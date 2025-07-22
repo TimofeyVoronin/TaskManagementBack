@@ -32,6 +32,7 @@ from .serializers import (
     tags=['Auth']
 )
 class RegistrationAPIView(APIView):
+    authentication_classes = [] 
     permission_classes = (AllowAny,)
 
     def post(self, request):
